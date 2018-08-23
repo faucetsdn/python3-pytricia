@@ -1,4 +1,4 @@
-source: pytricia
+Source: pytricia
 Section: python
 Priority: optional
 Maintainer: Brad Cowie <brad@faucet.nz>
