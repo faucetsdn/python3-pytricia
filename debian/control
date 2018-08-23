@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Brad Cowie <brad@faucet.nz>
 Build-Depends: debhelper (>=9),
                dh-python,
-               python3-all,
+               python3-all-dev,
                python3-setuptools
 Standards-Version: 3.9.6
 Homepage: https://pypi.org/project/pytricia/
@@ -24,6 +24,7 @@ Description: Pytricia is a Python module to store IP prefixes in a
  * it works nicely in Python 3, and
  * there are a few nicer library features for manipulating the structure.
  .
- See the github repo for documentation and some performance numbers: <https://github.com/jsommers/pytricia>.
+ See the github repo for documentation and some performance numbers:
+ <https://github.com/jsommers/pytricia>.
  .
  This package installs the library for Python 3.
