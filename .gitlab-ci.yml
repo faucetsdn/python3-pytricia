@@ -10,7 +10,7 @@ run-amd64-build:
     - mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
     - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
     - fakeroot debian/rules binary
-    - mkdir built-packages/amd64/ || true
+    - mkdir -p built-packages/amd64/ || true
     - mv ../*.deb built-packages/amd64/
   artifacts:
     paths:
@@ -25,7 +25,7 @@ run-armhf-build:
     - mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
     - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
     - fakeroot debian/rules binary
-    - mkdir built-packages/armhf/ || true
+    - mkdir -p built-packages/armhf/ || true
     - mv ../*.deb built-packages/armhf/
   artifacts:
     paths:
