@@ -1,6 +1,11 @@
+pytricia (1.0.0-2) unstable; urgency=medium
+
+  * Package rebuild to link with correct python version.
+
+ -- Brad Cowie <brad@faucet.nz>  Thu, 23 Aug 2018 11:36:41 +1200
+
 pytricia (1.0.0-1) unstable; urgency=medium
 
   * New upstream release.
 
  -- Brad Cowie <brad@faucet.nz>  Thu, 23 Aug 2018 11:36:41 +1200
-

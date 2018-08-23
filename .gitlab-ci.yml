@@ -2,31 +2,133 @@ stages:
   - build
   - deploy
 
-run-amd64-build:
+build-amd64-debian-jessie:
   stage: build
-  image: faucet/dbuilder
+  image: debian:jessie
   script:
-    - apt-get update && apt-get upgrade -y
-    - mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
-    - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
-    - fakeroot debian/rules binary
-    - mkdir -p built-packages/amd64/ || true
-    - mv ../*.deb built-packages/amd64/
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/debian_jessie/
+    - mv ../*.deb built-packages/amd64/debian_jessie/
   artifacts:
     paths:
       - built-packages/*
     expire_in: 1 day
 
-run-armhf-build:
+build-amd64-debian-stretch:
   stage: build
-  image: faucet/dbuilder-pi
+  image: debian:stretch
   script:
-    - apt-get update && apt-get upgrade -y
-    - mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
-    - export DEBEMAIL='maintainers@faucet.nz' && export DEBFULLNAME='Faucet Maintainers'
-    - fakeroot debian/rules binary
-    - mkdir -p built-packages/armhf/ || true
-    - mv ../*.deb built-packages/armhf/
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/debian_stretch/
+    - mv ../*.deb built-packages/amd64/debian_stretch/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-debian-buster:
+  stage: build
+  image: debian:buster
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/debian_buster/
+    - mv ../*.deb built-packages/amd64/debian_buster/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-armhf-debian-jessie:
+  stage: build
+  image: multiarch/debian-debootstrap:armhf-jessie
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/armhf/debian_jessie/
+    - mv ../*.deb built-packages/armhf/debian_jessie/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-armhf-debian-stretch:
+  stage: build
+  image: multiarch/debian-debootstrap:armhf-stretch
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/armhf/debian_stretch/
+    - mv ../*.deb built-packages/armhf/debian_stretch/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-armhf-debian-buster:
+  stage: build
+  image: multiarch/debian-debootstrap:armhf-buster
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/armhf/debian_buster/
+    - mv ../*.deb built-packages/armhf/debian_buster/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-ubuntu-xenial:
+  stage: build
+  image: ubuntu:xenial
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_xenial/
+    - mv ../*.deb built-packages/amd64/ubuntu_xenial/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-ubuntu-yakkety:
+  stage: build
+  image: ubuntu:yakkety
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_yakkety/
+    - mv ../*.deb built-packages/amd64/ubuntu_yakkety/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-ubuntu-zesty:
+  stage: build
+  image: ubuntu:yakkety
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_zesty/
+    - mv ../*.deb built-packages/amd64/ubuntu_zesty/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-ubuntu-artful:
+  stage: build
+  image: ubuntu:artful
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_artful/
+    - mv ../*.deb built-packages/amd64/ubuntu_artful/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-ubuntu-bionic:
+  stage: build
+  image: ubuntu:bionic
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_bionic/
+    - mv ../*.deb built-packages/amd64/ubuntu_bionic/
   artifacts:
     paths:
       - built-packages/*
@@ -38,14 +140,14 @@ deploy-package:
   script:
     - cd built-packages/
     - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$PACKAGECLOUD_TOKEN\"}" > ~/.packagecloud
-    - package_cloud push faucetsdn/faucet/debian/jessie amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/debian/stretch amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/debian/buster amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/jessie armhf/*.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/stretch armhf/*.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/buster armhf/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/xenial amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/yakkety amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/zesty amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/artful amd64/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/bionic amd64/*.deb || true
+    - package_cloud push faucetsdn/faucet/debian/jessie amd64/debian_jessie/*.deb || true
+    - package_cloud push faucetsdn/faucet/debian/stretch amd64/debian_stretch/*.deb || true
+    - package_cloud push faucetsdn/faucet/debian/buster amd64/debian_buster/*.deb || true
+    - package_cloud push faucetsdn/faucet/raspbian/jessie armhf/debian_jessie/*.deb || true
+    - package_cloud push faucetsdn/faucet/raspbian/stretch armhf/debian_stretch/*.deb || true
+    - package_cloud push faucetsdn/faucet/raspbian/buster armhf/debian_buster/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/xenial amd64/ubuntu_xenial/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/yakkety amd64/ubuntu_yakkety/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/zesty amd64/ubuntu_zesty/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/artful amd64/ubuntu_artful/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/bionic amd64/ubuntu_bionic/*.deb || true
