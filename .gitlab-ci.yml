@@ -86,30 +86,6 @@ build-amd64-ubuntu-xenial:
       - built-packages/*
     expire_in: 1 day
 
-build-amd64-ubuntu-yakkety:
-  stage: build
-  image: ubuntu:yakkety
-  script:
-    - ./gitlab-build.sh
-    - mkdir -p built-packages/amd64/ubuntu_yakkety/
-    - mv ../*.deb built-packages/amd64/ubuntu_yakkety/
-  artifacts:
-    paths:
-      - built-packages/*
-    expire_in: 1 day
-
-build-amd64-ubuntu-zesty:
-  stage: build
-  image: ubuntu:yakkety
-  script:
-    - ./gitlab-build.sh
-    - mkdir -p built-packages/amd64/ubuntu_zesty/
-    - mv ../*.deb built-packages/amd64/ubuntu_zesty/
-  artifacts:
-    paths:
-      - built-packages/*
-    expire_in: 1 day
-
 build-amd64-ubuntu-artful:
   stage: build
   image: ubuntu:artful
@@ -147,7 +123,5 @@ deploy-package:
     - package_cloud push faucetsdn/faucet/raspbian/stretch armhf/debian_stretch/*.deb || true
     - package_cloud push faucetsdn/faucet/raspbian/buster armhf/debian_buster/*.deb || true
     - package_cloud push faucetsdn/faucet/ubuntu/xenial amd64/ubuntu_xenial/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/yakkety amd64/ubuntu_yakkety/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/zesty amd64/ubuntu_zesty/*.deb || true
     - package_cloud push faucetsdn/faucet/ubuntu/artful amd64/ubuntu_artful/*.deb || true
     - package_cloud push faucetsdn/faucet/ubuntu/bionic amd64/ubuntu_bionic/*.deb || true
