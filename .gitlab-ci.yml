@@ -2,18 +2,6 @@ stages:
   - build
   - deploy
 
-build-amd64-debian-jessie:
-  stage: build
-  image: debian:jessie
-  script:
-    - ./gitlab-build.sh
-    - mkdir -p built-packages/amd64/debian_jessie/
-    - mv ../*.deb built-packages/amd64/debian_jessie/
-  artifacts:
-    paths:
-      - built-packages/*
-    expire_in: 1 day
-
 build-amd64-debian-stretch:
   stage: build
   image: debian:stretch
@@ -33,18 +21,6 @@ build-amd64-debian-buster:
     - ./gitlab-build.sh
     - mkdir -p built-packages/amd64/debian_buster/
     - mv ../*.deb built-packages/amd64/debian_buster/
-  artifacts:
-    paths:
-      - built-packages/*
-    expire_in: 1 day
-
-build-armhf-debian-jessie:
-  stage: build
-  image: multiarch/debian-debootstrap:armhf-jessie
-  script:
-    - ./gitlab-build.sh
-    - mkdir -p built-packages/armhf/debian_jessie/
-    - mv ../*.deb built-packages/armhf/debian_jessie/
   artifacts:
     paths:
       - built-packages/*
@@ -74,6 +50,18 @@ build-armhf-debian-buster:
       - built-packages/*
     expire_in: 1 day
 
+build-amd64-ubuntu-trusty:
+  stage: build
+  image: ubuntu:trusty
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_trusty/
+    - mv ../*.deb built-packages/amd64/ubuntu_trusty/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
 build-amd64-ubuntu-xenial:
   stage: build
   image: ubuntu:xenial
@@ -81,18 +69,6 @@ build-amd64-ubuntu-xenial:
     - ./gitlab-build.sh
     - mkdir -p built-packages/amd64/ubuntu_xenial/
     - mv ../*.deb built-packages/amd64/ubuntu_xenial/
-  artifacts:
-    paths:
-      - built-packages/*
-    expire_in: 1 day
-
-build-amd64-ubuntu-artful:
-  stage: build
-  image: ubuntu:artful
-  script:
-    - ./gitlab-build.sh
-    - mkdir -p built-packages/amd64/ubuntu_artful/
-    - mv ../*.deb built-packages/amd64/ubuntu_artful/
   artifacts:
     paths:
       - built-packages/*
@@ -110,18 +86,29 @@ build-amd64-ubuntu-bionic:
       - built-packages/*
     expire_in: 1 day
 
+build-amd64-ubuntu-cosmic:
+  stage: build
+  image: ubuntu:cosmic
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_cosmic/
+    - mv ../*.deb built-packages/amd64/ubuntu_cosmic/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
 deploy-package:
   stage: deploy
   image: faucet/dbuilder
   script:
     - cd built-packages/
     - echo "{\"url\":\"https://packagecloud.io\",\"token\":\"$PACKAGECLOUD_TOKEN\"}" > ~/.packagecloud
-    - package_cloud push faucetsdn/faucet/debian/jessie amd64/debian_jessie/*.deb || true
     - package_cloud push faucetsdn/faucet/debian/stretch amd64/debian_stretch/*.deb || true
     - package_cloud push faucetsdn/faucet/debian/buster amd64/debian_buster/*.deb || true
-    - package_cloud push faucetsdn/faucet/raspbian/jessie armhf/debian_jessie/*.deb || true
     - package_cloud push faucetsdn/faucet/raspbian/stretch armhf/debian_stretch/*.deb || true
     - package_cloud push faucetsdn/faucet/raspbian/buster armhf/debian_buster/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/trusty amd64/ubuntu_trusty/*.deb || true
     - package_cloud push faucetsdn/faucet/ubuntu/xenial amd64/ubuntu_xenial/*.deb || true
-    - package_cloud push faucetsdn/faucet/ubuntu/artful amd64/ubuntu_artful/*.deb || true
     - package_cloud push faucetsdn/faucet/ubuntu/bionic amd64/ubuntu_bionic/*.deb || true
+    - package_cloud push faucetsdn/faucet/ubuntu/cosmic amd64/ubuntu_cosmic/*.deb || true
