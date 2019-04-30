@@ -111,4 +111,4 @@ deploy-package:
     - package_cloud push faucetsdn/faucet-test/ubuntu/xenial amd64/ubuntu_xenial/*.deb || true
     - package_cloud push faucetsdn/faucet-test/ubuntu/bionic amd64/ubuntu_bionic/*.deb || true
     - package_cloud push faucetsdn/faucet-test/ubuntu/cosmic amd64/ubuntu_cosmic/*.deb || true
-    - package_cloud push faucetsdn/faucet-test/ubuntu/cosmic amd64/ubuntu_disco/*.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/disco amd64/ubuntu_disco/*.deb || true
