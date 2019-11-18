@@ -74,18 +74,6 @@ build-amd64-ubuntu-bionic:
       - built-packages/*
     expire_in: 1 day
 
-build-amd64-ubuntu-cosmic:
-  stage: build
-  image: ubuntu:cosmic
-  script:
-    - ./gitlab-build.sh
-    - mkdir -p built-packages/amd64/ubuntu_cosmic/
-    - mv ../*.deb built-packages/amd64/ubuntu_cosmic/
-  artifacts:
-    paths:
-      - built-packages/*
-    expire_in: 1 day
-
 build-amd64-ubuntu-disco:
   stage: build
   image: ubuntu:disco
@@ -93,6 +81,18 @@ build-amd64-ubuntu-disco:
     - ./gitlab-build.sh
     - mkdir -p built-packages/amd64/ubuntu_disco/
     - mv ../*.deb built-packages/amd64/ubuntu_disco/
+  artifacts:
+    paths:
+      - built-packages/*
+    expire_in: 1 day
+
+build-amd64-ubuntu-eoan:
+  stage: build
+  image: ubuntu:eoan
+  script:
+    - ./gitlab-build.sh
+    - mkdir -p built-packages/amd64/ubuntu_eoan/
+    - mv ../*.deb built-packages/amd64/ubuntu_eoan/
   artifacts:
     paths:
       - built-packages/*
@@ -110,5 +110,5 @@ deploy-package:
     - package_cloud push faucetsdn/faucet-test/raspbian/buster armhf/debian_buster/*.deb || true
     - package_cloud push faucetsdn/faucet-test/ubuntu/xenial amd64/ubuntu_xenial/*.deb || true
     - package_cloud push faucetsdn/faucet-test/ubuntu/bionic amd64/ubuntu_bionic/*.deb || true
-    - package_cloud push faucetsdn/faucet-test/ubuntu/cosmic amd64/ubuntu_cosmic/*.deb || true
     - package_cloud push faucetsdn/faucet-test/ubuntu/disco amd64/ubuntu_disco/*.deb || true
+    - package_cloud push faucetsdn/faucet-test/ubuntu/eoan amd64/ubuntu_eoan/*.deb || true
