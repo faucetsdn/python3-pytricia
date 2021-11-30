@@ -1,0 +1,80 @@
+name: Test building debian packages
+
+on: pull_request
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  debian-package-amd64:
+    name: "${{ matrix.distro }} ${{ matrix.release }} ${{ matrix.arch }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - distro: "debian"
+            release: "buster"
+            arch: "amd64"
+          - distro: "debian"
+            release: "bullseye"
+            arch: "amd64"
+          - distro: "ubuntu"
+            release: "bionic"
+            arch: "amd64"
+          - distro: "ubuntu"
+            release: "focal"
+            arch: "amd64"
+    container:
+      image: ${{ matrix.distro }}:${{ matrix.release }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get -y upgrade
+          apt-get -y install devscripts dpkg-dev debhelper equivs
+      - name: Bump version
+        run: |
+          export DEBEMAIL='maintainers@faucet.nz'
+          export DEBFULLNAME='Faucet Maintainers'
+          debchange -b "Test release"
+      - name: Build package
+        run: |
+          mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
+          dpkg-buildpackage -b -us -uc -rfakeroot
+
+  debian-package-other:
+    name: "${{ matrix.distro }} ${{ matrix.release }} ${{ matrix.arch }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro: [raspbian]
+        release: [buster, bullseye]
+        arch: [armv7, aarch64]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - uses: uraimo/run-on-arch-action@v2.1.1
+        name: Build artifact
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.release }}
+          setup: |
+            mkdir -p "${PWD}/packages"
+          dockerRunArgs: |
+            --volume "${PWD}/packages:/packages"
+          env: |
+            artifact_dir: ${{ matrix.distro }}_${{ matrix.release }}
+          shell: /bin/bash
+          install: |
+            apt-get update
+            apt-get -y upgrade
+            apt-get -y install devscripts dpkg-dev debhelper equivs
+          run: |
+            export DEBEMAIL='maintainers@faucet.nz'
+            export DEBFULLNAME='Faucet Maintainers'
+            debchange -b "Test release"
+            mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
+            dpkg-buildpackage -b -us -uc -rfakeroot
