@@ -29,6 +29,12 @@ jobs:
           - distro: "ubuntu"
             release: "focal"
             arch: "amd64"
+          - distro: "ubuntu"
+            release: "hirsute"
+            arch: "amd64"
+          - distro: "ubuntu"
+            release: "impish"
+            arch: "amd64"
     container:
       image: ${{ matrix.distro }}:${{ matrix.release }}
     steps:
