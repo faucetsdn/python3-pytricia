@@ -55,9 +55,43 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: [raspbian]
-        release: [buster, bullseye]
-        arch: [armv7, aarch64]
+        include:
+          - distro: "debian"
+            release: "buster"
+            arch: "armv7"
+          - distro: "debian"
+            release: "buster"
+            arch: "aarch64"
+          - distro: "debian"
+            release: "bullseye"
+            arch: "armv7"
+          - distro: "debian"
+            release: "bullseye"
+            arch: "aarch64"
+          - distro: "ubuntu"
+            release: "ubuntu18.04"
+            arch: "armv7"
+          - distro: "ubuntu"
+            release: "ubuntu18.04"
+            arch: "aarch64"
+          - distro: "ubuntu"
+            release: "ubuntu20.04"
+            arch: "armv7"
+          - distro: "ubuntu"
+            release: "ubuntu20.04"
+            arch: "aarch64"
+          - distro: "raspbian"
+            release: "buster"
+            arch: "armv7"
+          - distro: "raspbian"
+            release: "buster"
+            arch: "aarch64"
+          - distro: "raspbian"
+            release: "bullseye"
+            arch: "armv7"
+          - distro: "raspbian"
+            release: "bullseye"
+            arch: "aarch64"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -67,12 +101,6 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.release }}
-          setup: |
-            mkdir -p "${PWD}/packages"
-          dockerRunArgs: |
-            --volume "${PWD}/packages:/packages"
-          env: |
-            artifact_dir: ${{ matrix.distro }}_${{ matrix.release }}
           shell: /bin/bash
           install: |
             apt-get update
@@ -81,6 +109,9 @@ jobs:
           run: |
             export DEBEMAIL='maintainers@faucet.nz'
             export DEBFULLNAME='Faucet Maintainers'
+            mkdir -p /build
+            cp -r ${GITHUB_WORKSPACE} /build/package
+            cd /build/package
             debchange -b "Test release"
             mk-build-deps -i -r -t 'apt-get -f -y --force-yes'
             dpkg-buildpackage -b -us -uc -rfakeroot
