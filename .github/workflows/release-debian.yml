@@ -76,39 +76,51 @@ jobs:
         include:
           - distro: "debian"
             release: "buster"
+            image: "buster"
             arch: "armv7"
           - distro: "debian"
             release: "buster"
+            image: "buster"
             arch: "aarch64"
           - distro: "debian"
             release: "bullseye"
+            image: "bullseye"
             arch: "armv7"
           - distro: "debian"
             release: "bullseye"
+            image: "bullseye"
             arch: "aarch64"
           - distro: "ubuntu"
-            release: "ubuntu18.04"
+            release: "bionic"
+            image: "ubuntu18.04"
             arch: "armv7"
           - distro: "ubuntu"
-            release: "ubuntu18.04"
+            release: "bionic"
+            image: "ubuntu18.04"
             arch: "aarch64"
           - distro: "ubuntu"
-            release: "ubuntu20.04"
+            release: "focal"
+            image: "ubuntu20.04"
             arch: "armv7"
           - distro: "ubuntu"
-            release: "ubuntu20.04"
+            release: "focal"
+            image: "ubuntu20.04"
             arch: "aarch64"
           - distro: "raspbian"
             release: "buster"
+            image: "buster"
             arch: "armv7"
           - distro: "raspbian"
             release: "buster"
+            image: "buster"
             arch: "aarch64"
           - distro: "raspbian"
             release: "bullseye"
+            image: "bullseye"
             arch: "armv7"
           - distro: "raspbian"
             release: "bullseye"
+            image: "bullseye"
             arch: "aarch64"
     steps:
       - name: Checkout repo
@@ -118,7 +130,7 @@ jobs:
         id: build
         with:
           arch: ${{ matrix.arch }}
-          distro: ${{ matrix.release }}
+          distro: ${{ matrix.image }}
           shell: /bin/bash
           install: |
             apt-get update
