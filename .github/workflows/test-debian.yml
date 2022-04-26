@@ -25,10 +25,10 @@ jobs:
             release: "focal"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "hirsute"
+            release: "impish"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "impish"
+            release: "jammy"
             arch: "amd64"
     container:
       image: ${{ matrix.distro }}:${{ matrix.release }}
@@ -88,6 +88,14 @@ jobs:
             release: "focal"
             image: "ubuntu20.04"
             arch: "aarch64"
+          - distro: "ubuntu"
+            release: "jammy"
+            image: "ubuntu22.04"
+            arch: "armv7"
+          - distro: "ubuntu"
+            release: "jammy"
+            image: "ubuntu22.04"
+            arch: "aarch64"
           - distro: "raspbian"
             release: "buster"
             image: "buster"
@@ -107,7 +115,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - uses: uraimo/run-on-arch-action@v2.1.1
+      - uses: uraimo/run-on-arch-action@v2.2.0
         name: Build artifact
         id: build
         with:
