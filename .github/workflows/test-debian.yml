@@ -18,6 +18,9 @@ jobs:
           - distro: "debian"
             release: "bullseye"
             arch: "amd64"
+          - distro: "debian"
+            release: "bookworm"
+            arch: "amd64"
           - distro: "ubuntu"
             release: "bionic"
             arch: "amd64"
@@ -25,10 +28,10 @@ jobs:
             release: "focal"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "impish"
+            release: "jammy"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "jammy"
+            release: "lunar"
             arch: "amd64"
     container:
       image: ${{ matrix.distro }}:${{ matrix.release }}
@@ -115,7 +118,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - uses: uraimo/run-on-arch-action@v2.2.0
+      - uses: uraimo/run-on-arch-action@v2.5.1
         name: Build artifact
         id: build
         with:
