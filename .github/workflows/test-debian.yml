@@ -31,7 +31,7 @@ jobs:
             release: "jammy"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "lunar"
+            release: "noble"
             arch: "amd64"
     container:
       image: ${{ matrix.distro }}:${{ matrix.release }}
