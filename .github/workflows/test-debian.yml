@@ -22,22 +22,19 @@ jobs:
             release: "bookworm"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "bionic"
-            arch: "amd64"
-          - distro: "ubuntu"
             release: "focal"
             arch: "amd64"
           - distro: "ubuntu"
             release: "jammy"
             arch: "amd64"
           - distro: "ubuntu"
-            release: "lunar"
+            release: "noble"
             arch: "amd64"
     container:
       image: ${{ matrix.distro }}:${{ matrix.release }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install dependencies
         run: |
           apt-get update
@@ -75,13 +72,13 @@ jobs:
             release: "bullseye"
             image: "bullseye"
             arch: "aarch64"
-          - distro: "ubuntu"
-            release: "bionic"
-            image: "ubuntu18.04"
+          - distro: "debian"
+            release: "bookworm"
+            image: "bookworm"
             arch: "armv7"
-          - distro: "ubuntu"
-            release: "bionic"
-            image: "ubuntu18.04"
+          - distro: "debian"
+            release: "bookworm"
+            image: "bookworm"
             arch: "aarch64"
           - distro: "ubuntu"
             release: "focal"
@@ -117,7 +114,7 @@ jobs:
             arch: "aarch64"
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2.7.2
         name: Build artifact
         id: build
