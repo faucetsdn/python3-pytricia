@@ -13,16 +13,10 @@ jobs:
       matrix:
         include:
           - distro: "debian"
-            release: "buster"
-            arch: "amd64"
-          - distro: "debian"
-            release: "bullseye"
-            arch: "amd64"
-          - distro: "debian"
             release: "bookworm"
             arch: "amd64"
-          - distro: "ubuntu"
-            release: "focal"
+          - distro: "debian"
+            release: "trixie"
             arch: "amd64"
           - distro: "ubuntu"
             release: "jammy"
@@ -57,22 +51,6 @@ jobs:
       matrix:
         include:
           - distro: "debian"
-            release: "buster"
-            image: "buster"
-            arch: "armv7"
-          - distro: "debian"
-            release: "buster"
-            image: "buster"
-            arch: "aarch64"
-          - distro: "debian"
-            release: "bullseye"
-            image: "bullseye"
-            arch: "armv7"
-          - distro: "debian"
-            release: "bullseye"
-            image: "bullseye"
-            arch: "aarch64"
-          - distro: "debian"
             release: "bookworm"
             image: "bookworm"
             arch: "armv7"
@@ -80,14 +58,16 @@ jobs:
             release: "bookworm"
             image: "bookworm"
             arch: "aarch64"
-          - distro: "ubuntu"
-            release: "focal"
-            image: "ubuntu20.04"
-            arch: "armv7"
-          - distro: "ubuntu"
-            release: "focal"
-            image: "ubuntu20.04"
-            arch: "aarch64"
+          - distro: "debian"
+            release: "trixie"
+            image: "none"
+            arch: "none"
+            base_image: --platform=linux/arm/v7 arm32v7/debian:trixie
+          - distro: "debian"
+            release: "trixie"
+            image: "none"
+            arch: "none"
+            base_image: --platform=linux/arm64 arm64v8/debian:trixie
           - distro: "ubuntu"
             release: "jammy"
             image: "ubuntu22.04"
@@ -96,31 +76,24 @@ jobs:
             release: "jammy"
             image: "ubuntu22.04"
             arch: "aarch64"
-          - distro: "raspbian"
-            release: "buster"
-            image: "buster"
+          - distro: "ubuntu"
+            release: "noble"
+            image: "ubuntu24.04"
             arch: "armv7"
-          - distro: "raspbian"
-            release: "buster"
-            image: "buster"
-            arch: "aarch64"
-          - distro: "raspbian"
-            release: "bullseye"
-            image: "bullseye"
-            arch: "armv7"
-          - distro: "raspbian"
-            release: "bullseye"
-            image: "bullseye"
+          - distro: "ubuntu"
+            release: "noble"
+            image: "ubuntu24.04"
             arch: "aarch64"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - uses: uraimo/run-on-arch-action@v2.8.1
+      - uses: uraimo/run-on-arch-action@v3
         name: Build artifact
         id: build
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.image }}
+          base_image: ${{ matrix.base_image }}
           shell: /bin/bash
           install: |
             apt-get update
