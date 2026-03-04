@@ -21,6 +21,9 @@ jobs:
           - distro: "debian"
             release: "bookworm"
             arch: "amd64"
+          - distro: "debian"
+            release: "trixie"
+            arch: "amd64"
           - distro: "ubuntu"
             release: "focal"
             arch: "amd64"
@@ -80,6 +83,16 @@ jobs:
             release: "bookworm"
             image: "bookworm"
             arch: "aarch64"
+          - distro: "debian"
+            release: "trixie"
+            image: "none"
+            arch: "none"
+            base_image: --platform=linux/arm/v7 arm32v7/debian:trixie
+          - distro: "debian"
+            release: "trixie"
+            image: "none"
+            arch: "none"
+            base_image: --platform=linux/arm64 arm64v8/debian:trixie
           - distro: "ubuntu"
             release: "focal"
             image: "ubuntu20.04"
@@ -115,12 +128,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - uses: uraimo/run-on-arch-action@v2.8.1
+      - uses: uraimo/run-on-arch-action@v3
         name: Build artifact
         id: build
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.image }}
+          base_image: ${{ matrix.base_image }}
           shell: /bin/bash
           install: |
             apt-get update
