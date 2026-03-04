@@ -8,10 +8,15 @@ to recommend it over related modules (including py-radix and SubnetTree):
  2. it works in Python 3, and 
  3. there are a few nicer library features for manipulating the structure.
 
-Copyright (c) 2012-2017  Joel Sommers.  All rights reserved.
+Copyright (c) 2012-2025  Joel Sommers.  All rights reserved.
 
 Pytricia is released under terms of the GNU Lesser General Public License,
 version 3.0 and greater.
+
+## Support further development of Pytricia
+
+I originally wrote this code with funding from the US National Science Foundation.  Development since 2016 has been on an "as I have time and motivation" basis.  If you or your organization gets benefit from this software and you'd like to see further development, [please consider donating](https://www.buymeacoffee.com/joelsommers).
+
 
 # Building 
 
@@ -199,6 +204,18 @@ Although it is possible to store IPv4 and IPv6 subnets in the same trie, this is
     '2000::/8'
 
 IPv4 address `32.0.0.1` matches `2000::/8` prefix due to the first octet being the same in both. In order to avoid this, separate tries should be used for IPv4 and IPv6 prefixes. Alternatively, [IPv4 addresses can be mapped to IPv6 addresses](https://en.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses).
+
+``PyTricia`` objects can be be pickled, but you must first ``freeze()`` to reconfigure them to a more efficient representation suitable for serialization. Note that while in this more compact representation you can not modify the object. To restore the ability to modify you can use ``thaw()``.
+
+    >>> import pytricia
+    >>> import pickle
+    >>> pyt = pytricia.PyTricia()
+    >>> pyt.freeze()
+    >>> s = pickle.dumps(pyt)
+    >>> pyt = pickle.loads(s)
+    >>> pyt.thaw()
+
+
 
 # Performance
 
