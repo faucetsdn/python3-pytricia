@@ -94,7 +94,13 @@ jobs:
             release: "jammy"
             image: "ubuntu22.04"
             arch: "aarch64"
+          - distro: "ubuntu"
+            release: "noble"
+            image: "ubuntu24.04"
             arch: "armv7"
+          - distro: "ubuntu"
+            release: "noble"
+            image: "ubuntu24.04"
             arch: "aarch64"
     steps:
       - name: Checkout repo
